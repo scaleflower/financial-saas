@@ -1,12 +1,11 @@
-package com.fs.gateway;
+package com.fs.notificationservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GatewayApplication {
-
+public class NotificationServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        SpringApplication.run(NotificationServiceApplication.class, args);
     }
 }

@@ -5,16 +5,16 @@ spring:
   application:
     name: trans-service
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/financial_saas
     username: heyake
-    password: ""
+    password: EnablingSoft@2025
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        enabled: false
       config:
-        server-addr: localhost:8848
+        enabled: false
 
 mybatis-plus:
   configuration:
@@ -25,7 +25,3 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
-
-logging:
-  level:
-    com.fs.transservice: debug

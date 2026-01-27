@@ -1,19 +1,27 @@
 server:
   port: 8765
+
 spring:
   application:
     name: loan-service
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/financial_saas
     username: heyake
-    password: ""
+    password: EnablingSoft@2025
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+      config:
+        enabled: false
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
   global-config:
     db-config:
       id-type: auto
-logging:
-  level:
-    com.fs.loan-service: debug
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0

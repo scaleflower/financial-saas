@@ -1,34 +1,51 @@
 server:
-  port: 9000
+  port: 9200
 
 spring:
   application:
     name: gateway-service
+  main:
+    web-application-type: reactive
   cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-      config:
-        server-addr: localhost:8848
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
       routes:
         - id: tenant-service
-          uri: lb://tenant-service
+          uri: http://localhost:8080
           predicates:
             - Path=/tenants/**
         - id: user-service
-          uri: lb://user-service
+          uri: http://localhost:8762
           predicates:
-            - Path=/auth/**,/users/**
+            - Path=/users/**
         - id: org-service
-          uri: lb://org-service
+          uri: http://localhost:8763
           predicates:
             - Path=/orgs/**
-
-logging:
-  level:
-    org.springframework.cloud.gateway: debug
+        - id: trans-service
+          uri: http://localhost:8764
+          predicates:
+            - Path=/trans/**
+        - id: loan-service
+          uri: http://localhost:8765
+          predicates:
+            - Path=/loans/**
+        - id: repayment-service
+          uri: http://localhost:8766
+          predicates:
+            - Path=/repayments/**
+        - id: approval-service
+          uri: http://localhost:8767
+          predicates:
+            - Path=/approvals/**
+        - id: notification-service
+          uri: http://localhost:8768
+          predicates:
+            - Path=/notification/**
+        - id: report-service
+          uri: http://localhost:8769
+          predicates:
+            - Path=/report/**
+        - id: file-service
+          uri: http://localhost:8770
+          predicates:
+            - Path=/file/**

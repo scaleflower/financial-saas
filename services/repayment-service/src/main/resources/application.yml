@@ -1,14 +1,14 @@
 server:
-  port: 8763
+  port: 8766
 
 spring:
   application:
-    name: org-service
+    name: repayment-service
   datasource:
+    driver-class: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/financial_saas
     username: heyake
     password: EnablingSoft@2025
-    driver-class: org.postgresql.Driver
   cloud:
     nacos:
       discovery:
@@ -22,6 +22,3 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0

@@ -1,10 +1,10 @@
 package com.fs.tenant;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@SpringBootApplication(scanBasePackages = "com.fs.tenant")
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class TenantApplication {
     public static void main(String[] args) {
         SpringApplication.run(TenantApplication.class, args);
