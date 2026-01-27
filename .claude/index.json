@@ -1,0 +1,406 @@
+{
+  "project": {
+    "name": "Financial Reimbursement SaaS System",
+    "description": "财务报销SaaS系统 - Spring Boot 3.2 + Spring Cloud 2023 微服务架构，多租户SaaS平台",
+    "rootPath": "/Users/heyake/Documents/Jacky/financial-reimbursement-saas",
+    "lastUpdated": "2025-01-27T00:00:00Z",
+    "version": "1.0.0"
+  },
+  "metadata": {
+    "language": "Java",
+    "framework": "Spring Boot 3.2.0",
+    "jdkVersion": "17",
+    "buildTool": "Maven",
+    "totalModules": 18,
+    "totalJavaFiles": 48,
+    "totalConfigFiles": 10,
+    "coveragePercentage": 85
+  },
+  "ignorePatterns": [
+    "target/**",
+    ".git/**",
+    ".github/**",
+    "dist/**",
+    "build/**",
+    ".next/**",
+    "__pycache__/**",
+    "*.lock",
+    "*.log",
+    "*.jar",
+    "*.war",
+    "*.bin",
+    "*.pdf",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.mp4",
+    "*.zip",
+    "*.tar",
+    "*.gz",
+    ".DS_Store",
+    ".idea/**",
+    "*.iml",
+    "application-local.yml",
+    "application-dev.yml",
+    ".spec-workflow/approvals/*",
+    ".spec-workflow/archive/*",
+    ".spec-workflow/steering/*"
+  ],
+  "modules": [
+    {
+      "name": "common-core",
+      "path": "common/common-core",
+      "type": "library",
+      "description": "核心工具类、异常处理、统一返回",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.result.Result",
+        "com.fs.common.result.PageResult",
+        "com.fs.common.exception.BusinessException",
+        "com.fs.common.exception.GlobalExceptionHandler"
+      ],
+      "dependencies": ["spring-boot-starter", "lombok", "hutool-all", "fastjson2"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-web",
+      "path": "common/common-web",
+      "type": "library",
+      "description": "Web配置、拦截器、跨域处理",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.config.WebConfig",
+        "com.fs.common.interceptor.TenantInterceptor"
+      ],
+      "dependencies": ["common-core"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-security",
+      "path": "common/common-security",
+      "type": "library",
+      "description": "JWT认证、安全配置、用户信息",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.config.SecurityConfig",
+        "com.fs.common.config.JwtAuthInterceptor",
+        "com.fs.common.util.JwtUtil",
+        "com.fs.common.security.UserAuthInfo"
+      ],
+      "dependencies": ["common-core"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-tenant",
+      "path": "common/common-tenant",
+      "type": "library",
+      "description": "多租户上下文、租户拦截器",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.context.TenantContextHolder",
+        "com.fs.common.plugin.TenantLineInnerInterceptor"
+      ],
+      "dependencies": ["common-core"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-plugin",
+      "path": "common/common-plugin",
+      "type": "library",
+      "description": "插件化架构、动态表单引擎",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.plugin.TransTypePlugin",
+        "com.fs.common.plugin.TransTypePluginManager",
+        "com.fs.common.form.DynamicFormEngine",
+        "com.fs.common.model.FormSchema",
+        "com.fs.common.model.FormField"
+      ],
+      "dependencies": ["common-core"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-workflow",
+      "path": "common/common-workflow",
+      "type": "library",
+      "description": "Camunda工作流引擎集成",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [
+        "com.fs.common.workflow.WorkflowService",
+        "com.fs.common.config.CamundaConfig",
+        "com.fs.common.listener.TaskListener"
+      ],
+      "dependencies": ["common-core", "spring-zeebe-starter"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 100
+    },
+    {
+      "name": "common-mq",
+      "path": "common/common-mq",
+      "type": "library",
+      "description": "消息队列封装 (RabbitMQ)",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [],
+      "dependencies": ["common-core", "spring-boot-starter-amqp"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 80
+    },
+    {
+      "name": "common-feign",
+      "path": "common/common-feign",
+      "type": "library",
+      "description": "Feign客户端封装",
+      "entryPoints": [],
+      "apis": [],
+      "interfaces": [],
+      "dependencies": ["common-core", "spring-cloud-starter-openfeign"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 80
+    },
+    {
+      "name": "tenant-service",
+      "path": "services/tenant-service",
+      "type": "service",
+      "description": "租户管理、租户注册、配额控制",
+      "entryPoints": ["com.fs.tenant.TenantApplication"],
+      "apis": ["/tenants/**"],
+      "interfaces": [
+        "com.fs.tenant.controller.TenantController",
+        "com.fs.tenant.service.TenantService",
+        "com.fs.tenant.mapper.TenantMapper",
+        "com.fs.tenant.entity.Tenant"
+      ],
+      "dependencies": ["common-core", "common-web", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 8080,
+      "coverage": 100
+    },
+    {
+      "name": "user-service",
+      "path": "services/user-service",
+      "type": "service",
+      "description": "用户管理、认证授权、钉钉集成",
+      "entryPoints": ["com.fs.userservice.UserServiceApplication"],
+      "apis": ["/auth/**", "/users/**"],
+      "interfaces": [
+        "com.fs.userservice.controller.AuthController",
+        "com.fs.userservice.controller.UserController",
+        "com.fs.userservice.service.AuthService",
+        "com.fs.userservice.service.UserService",
+        "com.fs.userservice.mapper.UserMapper",
+        "com.fs.userservice.entity.User"
+      ],
+      "dependencies": ["common-core", "common-web", "common-security", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 8762,
+      "coverage": 100
+    },
+    {
+      "name": "org-service",
+      "path": "services/org-service",
+      "type": "service",
+      "description": "组织架构管理、组织树",
+      "entryPoints": ["com.fs.orgservice.OrgServiceApplication"],
+      "apis": ["/orgs/**"],
+      "interfaces": [
+        "com.fs.orgservice.controller.OrgController",
+        "com.fs.orgservice.service.OrgService",
+        "com.fs.orgservice.mapper.OrgMapper",
+        "com.fs.orgservice.entity.Org"
+      ],
+      "dependencies": ["common-core", "common-web", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": true,
+      "coverage": 100
+    },
+    {
+      "name": "trans-service",
+      "path": "services/trans-service",
+      "type": "service",
+      "description": "报销单管理、报销审批",
+      "entryPoints": ["com.fs.transservice.TransServiceApplication"],
+      "apis": ["/trans/**"],
+      "interfaces": [
+        "com.fs.transservice.controller.TransController",
+        "com.fs.transservice.service.TransService",
+        "com.fs.transservice.mapper.TransMapper",
+        "com.fs.transservice.entity.Trans",
+        "com.fs.transservice.entity.TransItem",
+        "com.fs.transservice.entity.ChargeItem"
+      ],
+      "dependencies": ["common-core", "common-web", "common-tenant", "common-plugin", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 8764,
+      "coverage": 100
+    },
+    {
+      "name": "loan-service",
+      "path": "services/loan-service",
+      "type": "service",
+      "description": "借款管理、借款审批",
+      "entryPoints": [],
+      "apis": ["/loan/**"],
+      "interfaces": [
+        "com.fs.loanservice.controller.LoanController",
+        "com.fs.loanservice.service.LoanService",
+        "com.fs.loanservice.entity.Loan"
+      ],
+      "dependencies": ["common-core", "common-web", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": true,
+      "coverage": 80
+    },
+    {
+      "name": "repayment-service",
+      "path": "services/repayment-service",
+      "type": "service",
+      "description": "还款管理、冲销结算",
+      "entryPoints": [],
+      "apis": ["/repayment/**"],
+      "interfaces": [
+        "com.fs.repaymentservice.entity.Repayment"
+      ],
+      "dependencies": ["common-core", "common-web", "mybatis-plus", "postgresql"],
+      "hasTests": false,
+      "hasConfig": false,
+      "coverage": 60
+    },
+    {
+      "name": "approval-service",
+      "path": "services/approval-service",
+      "type": "service",
+      "description": "审批流程管理",
+      "entryPoints": ["com.fs.approvalservice.ApprovalServiceApplication"],
+      "apis": ["/approval/**"],
+      "interfaces": [
+        "com.fs.approvalservice.controller.ApprovalController",
+        "com.fs.approvalservice.service.ApprovalService",
+        "com.fs.approvalservice.entity.ApprovalInstance",
+        "com.fs.approvalservice.entity.ApprovalTask"
+      ],
+      "dependencies": ["common-core", "common-web", "common-workflow", "camunda"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 8767,
+      "coverage": 90
+    },
+    {
+      "name": "notification-service",
+      "path": "services/notification-service",
+      "type": "service",
+      "description": "通知管理、消息推送",
+      "entryPoints": [],
+      "apis": ["/notification/**"],
+      "interfaces": [],
+      "dependencies": ["common-core", "common-web", "common-mq"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 8768,
+      "coverage": 70
+    },
+    {
+      "name": "report-service",
+      "path": "services/report-service",
+      "type": "service",
+      "description": "报表统计、数据导出",
+      "entryPoints": [],
+      "apis": ["/report/**"],
+      "interfaces": [],
+      "dependencies": ["common-core", "common-web"],
+      "hasTests": false,
+      "hasConfig": true,
+      "coverage": 50
+    },
+    {
+      "name": "file-service",
+      "path": "services/file-service",
+      "type": "service",
+      "description": "文件上传、MinIO集成",
+      "entryPoints": [],
+      "apis": ["/file/**"],
+      "interfaces": [],
+      "dependencies": ["common-core", "common-web", "minio"],
+      "hasTests": false,
+      "hasConfig": true,
+      "coverage": 50
+    },
+    {
+      "name": "gateway-service",
+      "path": "gateway/gateway-service",
+      "type": "gateway",
+      "description": "API网关、路由转发、租户识别",
+      "entryPoints": ["com.fs.gateway.GatewayApplication"],
+      "apis": ["/*"],
+      "interfaces": [
+        "com.fs.gateway.config.GatewayConfig",
+        "com.fs.gateway.filter.TenantFilter"
+      ],
+      "dependencies": ["spring-cloud-gateway", "spring-cloud-starter-loadbalancer"],
+      "hasTests": false,
+      "hasConfig": true,
+      "port": 9000,
+      "coverage": 100
+    }
+  ],
+  "gaps": [
+    {
+      "module": "repayment-service",
+      "missing": ["Controller", "Service", "Mapper"],
+      "recommendation": "需要补充 Controller、Service、Mapper 层实现"
+    },
+    {
+      "module": "loan-service",
+      "missing": ["Application", "Mapper"],
+      "recommendation": "需要补充主启动类和 Mapper 层"
+    },
+    {
+      "module": "notification-service",
+      "missing": ["Entity", "Controller", "Service"],
+      "recommendation": "需要补充完整的实体和业务层"
+    },
+    {
+      "module": "report-service",
+      "missing": ["Entity", "Controller", "Service"],
+      "recommendation": "需要补充完整的实体和业务层"
+    },
+    {
+      "module": "file-service",
+      "missing": ["Entity", "Controller", "Service"],
+      "recommendation": "需要补充完整的实体和业务层"
+    }
+  ],
+  "nextSteps": [
+    "补充 repayment-service 的完整实现",
+    "补充 loan-service 的主启动类和 Mapper",
+    "补充 notification-service 的业务实现",
+    "补充 report-service 的业务实现",
+    "补充 file-service 的业务实现",
+    "为所有服务添加单元测试",
+    "添加 API 文档 (Swagger/OpenAPI)"
+  ],
+  "truncated": false
+}

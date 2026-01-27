@@ -1,0 +1,22 @@
+server:
+  port: 8770
+
+spring:
+  application:
+    name: file-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/financial_saas
+    username: heyake
+    password: ""
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.fs.fileservice: debug

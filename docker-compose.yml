@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: fs-postgres
+    environment:
+      POSTGRES_DB: financial_saas
+      POSTGRES_USER: heyake
+      POSTGRES_PASSWORD: ""
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - fs-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: fs-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - fs-network
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: fs-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - fs-network
+
+  # Nacos
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: fs-nacos
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: postgresql
+      MYSQL_SERVICE_HOST: postgres
+      MYSQL_SERVICE_PORT: 5432
+      MYSQL_SERVICE_DB_NAME: nacos
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: nacos
+      NACOS_AUTH_ENABLE: false
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      - postgres
+    networks:
+      - fs-network
+
+  # MinIO
+  minio:
+    image: minio/minio:latest
+    container_name: fs-minio
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - fs-network
+
+  # Camunda (Optional - for workflow)
+  camunda:
+    image: camunda/camunda-platform:8.3.0
+    container_name: fs-camunda
+    environment:
+      CAMUNDA_DATABASE_TYPE: postgres
+      CAMUNDA_DATABASE_HOST: postgres
+      CAMUNDA_DATABASE_PORT: 5432
+      CAMUNDA_DATABASE_NAME: camunda
+      CAMUNDA_DATABASE_USER: camunda
+      CAMUNDA_DATABASE_PASSWORD: camunda
+      CAMUNDA_DB_DRIVER: org.postgresql.Driver
+      CAMUNDA_OPTIMIZE_JPA_QUERIES: true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - fs-network
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
+  minio-data:
+
+networks:
+  fs-network:
+    driver: bridge

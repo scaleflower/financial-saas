@@ -1,0 +1,25 @@
+server:
+  port: 8767
+
+spring:
+  application:
+    name: approval-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/financial_saas
+    username: heyake
+    password: ""
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+
+camunda:
+  gateway:
+    address: localhost:26500
+
+logging:
+  level:
+    com.fs.approvalservice: debug
