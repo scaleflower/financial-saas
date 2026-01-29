@@ -5,16 +5,19 @@ spring:
   application:
     name: repayment-service
   datasource:
-    driver-class: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/financial_saas
     username: heyake
     password: EnablingSoft@2025
   cloud:
     nacos:
       discovery:
-        enabled: false
+        enabled: true
+        server-addr: localhost:8848
       config:
         enabled: false
+        import-check:
+          enabled: false
 
 mybatis-plus:
   configuration:

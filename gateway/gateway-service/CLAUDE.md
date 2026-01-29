@@ -47,7 +47,7 @@ public class GatewayApplication {
 
 ```yaml
 server:
-  port: 9000
+  port: 9200
 
 spring:
   application:

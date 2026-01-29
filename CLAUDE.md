@@ -135,7 +135,22 @@ graph TD
 
 | 模块 | 端口 | 职责 | 状态 |
 |------|------|------|------|
-| [gateway-service](./gateway/gateway-service/CLAUDE.md) | 9000 | API网关、路由转发、租户识别 | 已实现 |
+| [gateway-service](./gateway/gateway-service/CLAUDE.md) | 9200 | API网关、路由转发、租户识别 | 已实现 |
+
+---
+
+## 服务器信息
+
+### 远程部署服务器
+
+| 项目 | 值 |
+|------|-----|
+| 地址 | 10.101.1.90 |
+| 端口 | 22 |
+| 用户名 | admin |
+| 密码 | `EnablingSoft@2025` |
+
+> **注意**: 密码认证可能被禁用，如需使用 SSH 密钥请联系管理员配置
 
 ---
 

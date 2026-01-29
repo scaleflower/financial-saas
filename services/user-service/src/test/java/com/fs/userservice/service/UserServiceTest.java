@@ -109,7 +109,7 @@ class UserServiceTest {
         
         boolean result = userService.deleteUser(userId);
         
-        assertThat(result).isTrue;
+        assertThat(result).isTrue();
         
         User deleted = userService.getUserById(userId);
         assertThat(deleted).isNull();
